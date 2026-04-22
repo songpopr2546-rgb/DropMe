@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 // Setup static folder for frontend
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 app.use(express.json());
 
 // Setup multer for in-memory file uploads
