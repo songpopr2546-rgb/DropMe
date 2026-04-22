@@ -126,7 +126,7 @@ async function uploadAndCompress(file, cardId, maxSize, maxWidth, maxHeight, for
     if (maxHeight) formData.append('maxHeight', maxHeight);
 
     try {
-        const response = await fetch('/compress', {
+        const response = await fetch('/api/compress', {
             method: 'POST',
             body: formData
         });
