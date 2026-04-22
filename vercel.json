@@ -1,9 +1,13 @@
 {
   "version": 2,
-  "functions": {
-    "api/compress.js": {
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  }
+  "builds": [
+    { "src": "api/compress.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "style.css", "use": "@vercel/static" },
+    { "src": "app.js", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/compress", "dest": "/api/compress" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
 }
