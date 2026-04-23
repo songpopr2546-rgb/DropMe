@@ -132,8 +132,14 @@ async function uploadAndCompress(file, cardId, maxSize, maxWidth, maxHeight, for
         img.src = data.dataUrl;
         
         let settingString = '';
-        if (data.settings === 'None') settingString = 'Skipped (Already Small)';
-        else settingString = `Q:${data.settings.quality} | Colors:${data.settings.colors} | Dither:${data.settings.dither !== undefined ? data.settings.dither : 1}`;
+        if (data.settings === 'None') {
+            settingString = 'Skipped (Already Small)';
+        } else if (data.settings && data.settings.quality !== undefined) {
+            const parts = [`Q:${data.settings.quality}`];
+            if (data.settings.colors !== undefined) parts.push(`Colors:${data.settings.colors}`);
+            if (data.settings.dither !== undefined) parts.push(`Dither:${data.settings.dither}`);
+            settingString = parts.join(' | ');
+        }
 
         metaList.innerHTML = `
             <span>Original: ${formatBytes(data.originalSize)}</span>

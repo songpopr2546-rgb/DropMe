@@ -320,14 +320,19 @@ header p {
 
 .file-info {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
 .file-name {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .file-meta {
