@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compress Target Size | DropMe</title>
+    <title>Pro Mode | DropMe</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -18,17 +18,41 @@
         </a>
 
         <header style="padding-top: 0;">
-            <h1 style="font-size: 2.5rem;">Compress Target Size</h1>
-            <p>Force an image to be smaller than a specific MB</p>
+            <h1 style="font-size: 2.5rem;">Pro Mode</h1>
+            <p>Full control over file size, dimensions, and formats</p>
         </header>
 
         <section class="glass-panel">
-            <div class="controls-grid" style="grid-template-columns: 1fr; max-width: 400px; margin: 0 auto;">
+            <div class="controls-grid">
                 <div class="control-group" id="max-size-wrapper-container">
                     <label for="max-size">Target Max Size</label>
                     <div class="premium-input">
                         <input type="number" id="max-size" value="1.9" step="0.1" min="0.1" />
                         <span>MB</span>
+                    </div>
+                </div>
+
+                <div class="control-group" id="max-bounds-wrapper-container">
+                    <label title="Leave empty to maintain original dimensions">Max Dimensions (Optional)</label>
+                    <div style="display: flex; gap: 12px;">
+                        <div class="premium-input" style="flex: 1; padding: 10px 14px;">
+                            <input type="number" id="max-width" placeholder="Width (px)" />
+                        </div>
+                        <div class="premium-input" style="flex: 1; padding: 10px 14px;">
+                            <input type="number" id="max-height" placeholder="Height (px)" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group" style="grid-column: span 2;">
+                    <label for="output-format">Saved the result as...</label>
+                    <div class="premium-input">
+                        <select id="output-format">
+                            <option value="webp" selected>WebP</option>
+                            <option value="jpeg">JPEG</option>
+                            <option value="avif">AVIF</option>
+                            <option value="png">PNG</option>
+                        </select>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Format & Resize | DropMe</title>
+    <title>Format Converter | DropMe</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -18,24 +18,12 @@
         </a>
 
         <header style="padding-top: 0;">
-            <h1 style="font-size: 2.5rem;">Format & Resize</h1>
-            <p>Convert format and scale down your images beautifully</p>
+            <h1 style="font-size: 2.5rem;">Format Converter</h1>
+            <p>Elegantly convert images to WebP, JPEG, AVIF, or PNG</p>
         </header>
 
         <section class="glass-panel">
-            <div class="controls-grid" style="grid-template-columns: 1fr;">
-                <div class="control-group" id="max-bounds-wrapper-container">
-                    <label title="Leave empty to maintain original dimensions">Max Dimensions (Optional)</label>
-                    <div style="display: flex; gap: 12px;">
-                        <div class="premium-input" style="flex: 1; padding: 10px 14px;">
-                            <input type="number" id="max-width" placeholder="Width (px)" />
-                        </div>
-                        <div class="premium-input" style="flex: 1; padding: 10px 14px;">
-                            <input type="number" id="max-height" placeholder="Height (px)" />
-                        </div>
-                    </div>
-                </div>
-
+            <div class="controls-grid" style="grid-template-columns: 1fr; max-width: 400px; margin: 0 auto;">
                 <div class="control-group">
                     <label for="output-format">Saved the result as...</label>
                     <div class="premium-input">
