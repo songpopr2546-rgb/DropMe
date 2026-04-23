@@ -429,6 +429,22 @@ header p {
 .nav-card:hover::before {
     opacity: 1;
 }
+.icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-card:hover .icon-wrapper {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+}
+
 .nav-card h2 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -439,11 +455,11 @@ header p {
     line-height: 1.5;
 }
 .nav-card svg {
-    color: var(--accent-blue);
+    /* Color now handled dynamically or by stroke attribute */
     transition: transform 0.4s ease;
 }
 .nav-card:hover svg {
-    transform: scale(1.1) translateY(-5px);
+    /* Transform handled by wrapper instead */
 }
 
 .back-link {
