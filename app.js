@@ -1,35 +1,18 @@
+(function() {
 const dropZone = document.getElementById('drop-zone');
+if (!dropZone) return; // Exit if on nav hub page
+
 const fileInput = document.getElementById('file-input');
 const resultsContainer = document.getElementById('results-container');
 const maxSizeInput = document.getElementById('max-size');
 const maxWidthInput = document.getElementById('max-width');
 const maxHeightInput = document.getElementById('max-height');
 const outputFormatSelect = document.getElementById('output-format');
-const maxSizeWrapperContainer = document.getElementById('max-size-wrapper-container');
-const maxBoundsWrapperContainer = document.getElementById('max-bounds-wrapper-container');
-const modeTabs = document.querySelectorAll('.mode-tab');
 const resultsHeader = document.getElementById('results-header');
 const downloadZipBtn = document.getElementById('download-zip');
+const pageMode = document.body.dataset.pageMode || 'compress';
 
 let processedFiles = [];
-
-// Mode Toggle UI via Tabs
-modeTabs.forEach(tab => {
-    tab.addEventListener('click', (e) => {
-        modeTabs.forEach(t => t.classList.remove('active'));
-        e.target.classList.add('active');
-        
-        const selectedMode = e.target.dataset.mode;
-        
-        if (selectedMode === 'convert') {
-            maxSizeWrapperContainer.style.display = 'none';
-            maxBoundsWrapperContainer.style.display = 'block';
-        } else {
-            maxSizeWrapperContainer.style.display = 'flex';
-            maxBoundsWrapperContainer.style.display = 'none';
-        }
-    });
-});
 
 // Drag and Drop Events
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -59,11 +42,11 @@ function handleDrop(e) {
 }
 
 function handleFiles(files) {
-    const maxSize = maxSizeInput.value || 1.9;
-    const maxWidth = maxWidthInput.value;
-    const maxHeight = maxHeightInput.value;
-    const format = outputFormatSelect.value || 'webp';
-    const mode = document.querySelector('.mode-tab.active').dataset.mode || 'compress';
+    const maxSize = maxSizeInput ? (maxSizeInput.value || 1.9) : null;
+    const maxWidth = maxWidthInput ? maxWidthInput.value : null;
+    const maxHeight = maxHeightInput ? maxHeightInput.value : null;
+    const format = outputFormatSelect ? (outputFormatSelect.value || 'webp') : 'webp';
+    const mode = pageMode || 'compress';
     
     resultsHeader.style.display = 'flex';
     
@@ -227,3 +210,4 @@ downloadZipBtn.addEventListener('click', async () => {
     downloadZipBtn.style.pointerEvents = 'auto';
     downloadZipBtn.style.opacity = '1';
 });
+})();
