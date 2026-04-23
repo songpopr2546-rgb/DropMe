@@ -1,7 +1,20 @@
 const multer = require('multer');
 const sharp = require('sharp');
 
-const upload = multer({ storage: multer.memoryStorage() });
+const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif', 'image/tiff'];
+const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: MAX_FILE_SIZE },
+    fileFilter: (req, file, cb) => {
+        if (ALLOWED_MIME_TYPES.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Invalid file type. Only images are allowed.'));
+        }
+    }
+});
 
 const runMiddleware = (req, res, fn) =>
     new Promise((resolve, reject) =>
@@ -18,13 +31,18 @@ module.exports = async function handler(req, res) {
 
         if (!req.file) return res.status(400).json({ error: 'No image uploaded.' });
 
+        // Verify MIME type again after upload (double-check)
+        if (!ALLOWED_MIME_TYPES.includes(req.file.mimetype)) {
+            return res.status(400).json({ error: 'Invalid file type. Only images are allowed.' });
+        }
+
         let maxSizeMB = parseFloat(req.body.maxSize);
-        if (isNaN(maxSizeMB)) maxSizeMB = 1.9;
+        if (isNaN(maxSizeMB) || maxSizeMB <= 0 || maxSizeMB > 500) maxSizeMB = 1.9;
         const MAX_SIZE_BYTES = maxSizeMB * 1024 * 1024;
 
         const inputBuffer = req.file.buffer;
-        const format = req.body.format || 'webp';
-        const mode = req.body.mode || 'compress';
+        const format = ['webp', 'jpeg', 'avif', 'png'].includes(req.body.format) ? req.body.format : 'webp';
+        const mode = ['compress', 'convert'].includes(req.body.mode) ? req.body.mode : 'compress';
 
         let processBuffer = inputBuffer;
         const maxWidth = parseInt(req.body.maxWidth);
@@ -32,8 +50,8 @@ module.exports = async function handler(req, res) {
 
         let shouldResize = false;
         const resizeOpts = { withoutEnlargement: true, fit: 'inside' };
-        if (!isNaN(maxWidth) && maxWidth > 0) { resizeOpts.width = maxWidth; shouldResize = true; }
-        if (!isNaN(maxHeight) && maxHeight > 0) { resizeOpts.height = maxHeight; shouldResize = true; }
+        if (!isNaN(maxWidth) && maxWidth > 0 && maxWidth <= 10000) { resizeOpts.width = maxWidth; shouldResize = true; }
+        if (!isNaN(maxHeight) && maxHeight > 0 && maxHeight <= 10000) { resizeOpts.height = maxHeight; shouldResize = true; }
         if (shouldResize) { processBuffer = await sharp(inputBuffer).resize(resizeOpts).toBuffer(); }
 
         if (mode === 'compress' && processBuffer.length <= MAX_SIZE_BYTES && !shouldResize) {
@@ -97,6 +115,10 @@ module.exports = async function handler(req, res) {
 
     } catch (err) {
         console.error(err);
+        // Give user-friendly messages for multer errors
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(413).json({ error: `File too large. Maximum allowed size is 20MB.` });
+        }
         res.status(500).json({ error: err.message });
     }
 };
